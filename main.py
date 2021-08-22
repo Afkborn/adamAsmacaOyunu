@@ -19,7 +19,7 @@ pcName = environ['COMPUTERNAME']
 
 
 if __name__ == "__main__":
-    diffLevel = 1
+    hangman = Hangman(pcName)
     while whileControl:
         if printOneTimeMenu:
             system('cls')
@@ -48,17 +48,18 @@ if __name__ == "__main__":
             exit()
         elif secim == b'\r':
             if okBaslangic ==0:
-                hangman = Hangman(pcName,diffLevel)
-                hangman.loadDatabase()
+                hangman.startGame()
                 printOneTimeMenu=False
             elif okBaslangic ==1:
                 printOneTimeMenu=False
-                print(f"Current Difficulty: {diffLevelList[diffLevel]}")
+                currentDiffLevel = hangman.getDiff()
+                print(f"Current Difficulty: {diffLevelList[currentDiffLevel]}")
                 for index,i in enumerate(diffLevelList,start=1):
                     print(f"{index}) {i} ",end="")
                 try:
                     diffLevel = int(input('\nDiff Level: '))-1
                     print(f"New Difficulty: {diffLevelList[diffLevel]}")
+                    hangman.changeDiff(diffLevel)
                     print("Press any key to continue.")
                     msvcrt.getch()
                     printOneTimeMenu=True

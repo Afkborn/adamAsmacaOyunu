@@ -1,2 +1,9 @@
 value,category,diffLevel
-adana,cities,1
+adana,cities,0
+istanbul,cities,1
+at,animal,0
+penguen,animal,1
+gül,plants,0
+zambak,plants,1
+türkiye,countries,1
+abd,countries,0
