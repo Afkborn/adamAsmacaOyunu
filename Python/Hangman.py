@@ -1,5 +1,5 @@
 from random import randint
-from os import getcwd, path
+from os import getcwd, path, system
 
 from Python.Value import Value
 import pandas as pd
@@ -9,6 +9,7 @@ class Hangman:
     __values = [] 
     databaseLoc = getcwd() +  fr'\Database\database.csv'
     __chosenWord = "None"
+    __lenChosenWord = 0
     __isLoadDatabase = False
     __selectedWords = []
 
@@ -53,15 +54,29 @@ class Hangman:
             else:
                 control = False
                 self.__chosenWord = selectedValue
+                self.__lenChosenWord = len(selectedValue)
                 self.__selectedWords.append(self.__chosenWord)
 
 
     def __getRandomValue(self)->int:
         return randint(0,len(self.__values)-1)
 
+    def __printGameScreen(self):
+        #TODO oyun ekranını yazdır.
+        pass
+
+    
+    def getLetter(self,letter):
+        #TODO girilen harfin kurallara uyup uymadığını kontrol et
+        self.enteredLetter = letter
+        return self.enteredLetter
+
+
+
     def startGame(self):
         if self.__isLoadDatabase:
             self.__chooseWord()
+            self.__printGameScreen()
 
         else:
             print("Error (database error)")
