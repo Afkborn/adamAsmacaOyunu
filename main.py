@@ -49,7 +49,7 @@ if __name__ == "__main__":
         elif secim == b'\r':
             if okBaslangic ==0:
                 hangman = Hangman(pcName,diffLevel)
-
+                hangman.loadDatabase()
                 printOneTimeMenu=False
             elif okBaslangic ==1:
                 printOneTimeMenu=False
