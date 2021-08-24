@@ -29,28 +29,27 @@ if __name__ == "__main__":
                     print(f"\t\t> {i}")
                 else:
                     print(f"\t\t{i}")
-            
         printOneTimeMenu = False
         secim = msvcrt.getch()
-        if secim == b"H":
+        if secim == b"H": # PRESS UP
             if okBaslangic == 0:
                 okBaslangic == len(menuSecenekler)-1
             else:
                 okBaslangic-=1
             printOneTimeMenu = True
-        elif secim == b"P":
+        elif secim == b"P": # PRESS DOWN
             if okBaslangic == len(menuSecenekler)-1:
                 okBaslangic == 0
             else:
                 okBaslangic+=1
             printOneTimeMenu = True
-        elif secim == b'\x03':
+        elif secim == b'\x03': # PRESS CTRL C
             exit()
-        elif secim == b'\r':
-            if okBaslangic ==0:
+        elif secim == b'\r': # PRESS ENTER
+            if okBaslangic ==0: # START GAME
                 hangman.startGame()
-                printOneTimeMenu=False
-            elif okBaslangic ==1:
+                printOneTimeMenu=True
+            elif okBaslangic ==1: # CHANGE DİFF
                 printOneTimeMenu=False
                 currentDiffLevel = hangman.getDiff()
                 print(f"Current Difficulty: {diffLevelList[currentDiffLevel]}")
@@ -66,12 +65,9 @@ if __name__ == "__main__":
                 except ValueError:
                     print('Check value')
                 finally:
-                    inputDiff = 1
-                
-            elif okBaslangic ==2:
+                    inputDiff = 1 
+            elif okBaslangic ==2: # PRİNT ABOUT US TEXT
                 print(aboutUsText)
                 printOneTimeMenu=False
-            elif okBaslangic ==3:
+            elif okBaslangic ==3: #EXIT
                 whileControl = False
-
-
