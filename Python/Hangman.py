@@ -59,24 +59,41 @@ class Hangman:
         while control:
             if len(self.__selectedWords) == len(self.__values):
                 self.__selectedWords.clear()
+            
+
+            zorlukSeviyesiOyunSeviyesiIleAynıOlanlarinSayisi = 0 # Değişken ismi için kusura bakmayın bulamadım :)
+            for value in self.__values:
+                diffLevel = value.getDiffLevel()
+                if diffLevel == self.__diff:
+                    zorlukSeviyesiOyunSeviyesiIleAynıOlanlarinSayisi += 1
+            if len(self.__selectedWords) == zorlukSeviyesiOyunSeviyesiIleAynıOlanlarinSayisi:
+                self.__selectedWords.clear()
+
+
             randomValue = self.__getRandomValue()
-            selectedValue = self.__values[randomValue].getValue()
+            selectedObj = self.__values[randomValue]
+            selectedValue = selectedObj.getValue()
             if selectedValue in self.__selectedWords:
                 control = True
             else:
-                control = False
-                self.__chosenWord = selectedValue
-                for i in self.__chosenWord:
-                    if not i in self.__chosenWordList:
-                        self.__chosenWordList.append(i)
-                    iValue = self.__chosenWordLetters.get(i,-1)
-                    if iValue == -1:
-                        self.__chosenWordLetters[i] = 1
-                    else:
-                        self.__chosenWordLetters[i] += 1
-                self.__lenChosenWord = len(selectedValue)
-                self.__remLetterCount = self.__lenChosenWord
-                self.__selectedWords.append(self.__chosenWord)
+
+                if selectedObj.getDiffLevel() == self.__diff:
+                    control = False
+                    self.__chosenWord = selectedValue
+                    for i in self.__chosenWord:
+                        if not i in self.__chosenWordList:
+                            self.__chosenWordList.append(i)
+                        iValue = self.__chosenWordLetters.get(i,-1)
+                        if iValue == -1:
+                            self.__chosenWordLetters[i] = 1
+                        else:
+                            self.__chosenWordLetters[i] += 1
+                    self.__lenChosenWord = len(selectedValue)
+                    self.__remLetterCount = self.__lenChosenWord
+                    self.__selectedWords.append(self.__chosenWord)
+                else:
+                    control = True
+
         print(self.__chosenWordLetters)
         print(self.__chosenWord)
 
