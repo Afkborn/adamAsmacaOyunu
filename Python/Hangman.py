@@ -25,7 +25,7 @@ class Hangman:
     __enteredLetters = []
     __knownLetters = []
     __remLetterCount = 0 # kalan harf sayisi
-
+    __detailTextList = []
     def __init__(self,pcName,diff = 1):
         self.__pcName = pcName
         self.__diff = diff
@@ -88,14 +88,16 @@ class Hangman:
                             self.__chosenWordLetters[i] = 1
                         else:
                             self.__chosenWordLetters[i] += 1
+                    
+                    self.__addDetailText(f"Kategori: {selectedObj.getCategory()}")
+                    self.__printDetailText()
                     self.__lenChosenWord = len(selectedValue)
                     self.__remLetterCount = self.__lenChosenWord
                     self.__selectedWords.append(self.__chosenWord)
                 else:
                     control = True
 
-        print(self.__chosenWordLetters)
-        print(self.__chosenWord)
+
 
 
 
@@ -103,9 +105,7 @@ class Hangman:
         return randint(0,len(self.__values)-1)
 
     def __printGameScreen(self):
-
-
-        print(f"\n\n\nBURAYA ADAM ASMANIN AKTİF DURUMUNU BELİRTEN GRAFİK ÇİZİLECEK Şimdilik can yazsın: {self.__numberOfLives}\n\n\n")
+        print(f"\n\n\n\n\n\n")
         print("\t\t\t",end=" ")
         for i in self.__chosenWord:
             if i in self.__knownLetters:
@@ -142,17 +142,44 @@ class Hangman:
     def __goMainMenu(self):
         pass
 
+    def __printDetailText(self):
+        system('cls')
+        self.__printGameScreen()
+        self.__smartDelete()
+        for i in self.__detailTextList:
+            print(i)
+
+    def __smartDelete(self):
+        loseTextList = []
+        minLoseInt = 999
+        for index,i in enumerate(self.__detailTextList):
+            if "Maalesef" in i:
+                iInt = int(i.replace('Maalesef yanlış seçim, ',"").replace(' hakkın kaldı.',""))
+                if iInt < minLoseInt:
+                    minLoseInt = iInt
+                loseTextList.append((index,iInt))
+
+
+
+        for index, j in loseTextList:
+            if j != minLoseInt:
+                self.__detailTextList.pop(index)
+        
+        
+
+    def __addDetailText(self,text):
+        self.__detailTextList.append(text)
+
     def __getLetter(self):
-        print(self.__chosenWordLetters)
-        print(f"Kalan harf sayısı: {self.__remLetterCount}")
+        
+        #print(f"Kalan harf sayısı: {self.__remLetterCount}")
         letter = msvcrt.getwch()
         letter = letter.lower().strip()
         if len(letter ) == 1: #CHECK LETTER LENGHT
-            
             if letter in self.__chosenWordList:
                 self.__chosenWordList.remove(letter)
                 lenLetter = self.__chosenWordLetters.get(letter,-1)
-                print(f"Evet doğru bildin, {letter} harfinden {lenLetter} tane var.")
+                self.__addDetailText(f"Evet doğru bildin, {letter} harfinden {lenLetter} tane var.")
                 if not letter in self.__enteredLetters:
                     self.__enteredLetters.append(letter)
                 self.__remLetterCount -= lenLetter
@@ -161,8 +188,13 @@ class Hangman:
                 if not letter in self.__enteredLetters:
                     self.__enteredLetters.append(letter)
                 self.__numberOfLives -=1
-                print(f"Maalesef yanlış seçim, {self.__numberOfLives} hakkın kaldı.")
-                pass
+                self.__addDetailText(f"Maalesef yanlış seçim, {self.__numberOfLives} hakkın kaldı.")
+        iInt = 0
+        for i in self.__detailTextList:
+            if "Kalan harf sayısı: " in i:
+                iInt = int(i.replace('Kalan harf sayısı: ',""))
+        if iInt != self.__remLetterCount:
+            self.__addDetailText(f"Kalan harf sayısı: {self.__remLetterCount}")
 
 
     def __checkWinStatus(self):
@@ -177,15 +209,16 @@ class Hangman:
 
 
     def __resetGame(self):
-        self.__chosenWordList = []
+        self.__chosenWordList.clear()
         self.__score = 0
         self.__winStat = False
         self.__numberOfLives = 10
         self.__lenChosenWord = 0
         self.__chosenWordLetters = dict()
-        self.__enteredLetters = []
-        self.__knownLetters = []
+        self.__enteredLetters.clear()
+        self.__knownLetters.clear()
         self.__remLetterCount = 0 # kalan harf sayisi
+        self.__detailTextList.clear()
 
     def __calculateScore(self):
         winLoseCont = 25 # kaybettiyse 25 puan
@@ -214,22 +247,20 @@ class Hangman:
 
     def startGame(self):
         if self.__isLoadDatabase:
+            system('cls')
             self.__chooseWord()
+            # self.__printGameScreen()
             whileControl = True
             while whileControl:
-                self.__printGameScreen()
                 if self.__numberOfLives == 0:
                     whileControl = False
                     self.__checkWinStatus()
-                    self.__printGameScreen()
-                    
                 elif self.__remLetterCount == 0:
                     whileControl = False
                     self.__checkWinStatus()
-                    self.__printGameScreen()
                 else:
-                    
                     self.__getLetter()
+                self.__printDetailText()
 
         else:
             print("Error (database error)")
