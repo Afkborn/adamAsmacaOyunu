@@ -100,7 +100,6 @@ class Hangman:
 
 
 
-
     def __getRandomValue(self)->int:
         return randint(0,len(self.__values)-1)
 
@@ -125,7 +124,6 @@ class Hangman:
             exit()
         else:
             self.__resetGame()
-            self.__goMainMenu()
 
     def __printLoseScreen(self):
         self.__calculateScore()
@@ -137,10 +135,8 @@ class Hangman:
             exit()
         else:
             self.__resetGame()
-            self.__goMainMenu()
     
-    def __goMainMenu(self):
-        pass
+
 
     def __printDetailText(self):
         system('cls')
@@ -158,9 +154,6 @@ class Hangman:
                 if iInt < minLoseInt:
                     minLoseInt = iInt
                 loseTextList.append((index,iInt))
-
-
-
         for index, j in loseTextList:
             if j != minLoseInt:
                 self.__detailTextList.pop(index)
@@ -171,30 +164,36 @@ class Hangman:
         self.__detailTextList.append(text)
 
     def __getLetter(self):
-        
-        #print(f"Kalan harf sayısı: {self.__remLetterCount}")
+
+        bannedASCII = [224,46,44,34,60,62,48,49,50,51,52,53,54,55,56,57,45,42,47]
         letter = msvcrt.getwch()
         letter = letter.lower().strip()
+        control = False
+        for ascii in bannedASCII:
+            if ord(letter) == ascii:
+                control= True
+
         if len(letter ) == 1: #CHECK LETTER LENGHT
-            if letter in self.__chosenWordList:
-                self.__chosenWordList.remove(letter)
-                lenLetter = self.__chosenWordLetters.get(letter,-1)
-                self.__addDetailText(f"Evet doğru bildin, {letter} harfinden {lenLetter} tane var.")
-                if not letter in self.__enteredLetters:
-                    self.__enteredLetters.append(letter)
-                self.__remLetterCount -= lenLetter
-                self.__knownLetters.append(letter)
-            else:
-                if not letter in self.__enteredLetters:
-                    self.__enteredLetters.append(letter)
-                self.__numberOfLives -=1
-                self.__addDetailText(f"Maalesef yanlış seçim, {self.__numberOfLives} hakkın kaldı.")
-        iInt = 0
-        for i in self.__detailTextList:
-            if "Kalan harf sayısı: " in i:
-                iInt = int(i.replace('Kalan harf sayısı: ',""))
-        if iInt != self.__remLetterCount:
-            self.__addDetailText(f"Kalan harf sayısı: {self.__remLetterCount}")
+            if not control:
+                if letter in self.__chosenWordList:
+                    self.__chosenWordList.remove(letter)
+                    lenLetter = self.__chosenWordLetters.get(letter,-1)
+                    self.__addDetailText(f"Evet doğru bildin, {letter} harfinden {lenLetter} tane var.")
+                    if not letter in self.__enteredLetters:
+                        self.__enteredLetters.append(letter)
+                    self.__remLetterCount -= lenLetter
+                    self.__knownLetters.append(letter)
+                else:
+                    if not letter in self.__enteredLetters:
+                        self.__enteredLetters.append(letter)
+                    self.__numberOfLives -=1
+                    self.__addDetailText(f"Maalesef yanlış seçim, {self.__numberOfLives} hakkın kaldı.")
+            iInt = 0
+            for i in self.__detailTextList:
+                if "Kalan harf sayısı: " in i:
+                    iInt = int(i.replace('Kalan harf sayısı: ',""))
+            if iInt != self.__remLetterCount:
+                self.__addDetailText(f"Kalan harf sayısı: {self.__remLetterCount}")
 
 
     def __checkWinStatus(self):

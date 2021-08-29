@@ -4,6 +4,9 @@ import msvcrt
 from keyboard import is_pressed
 from os import system,environ
 
+from colorama import Fore
+
+
 
 from Python.Hangman import Hangman
 
@@ -23,6 +26,7 @@ if __name__ == "__main__":
     while whileControl:
         if printOneTimeMenu:
             system('cls')
+            print(Fore.BLUE + " ")
             print(pyfiglet.figlet_format('Bluecoder'))
             for index,i in enumerate(menuSecenekler):
                 if index == okBaslangic:
