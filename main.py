@@ -13,7 +13,7 @@ from Python.Hangman import Hangman
 menuSecenekler = ["Start Game","Change Difficulty","About Us","Exit"]
 categories = ["Countries","Cities","Animals","Plants","Random"]
 diffLevelList = ['Easy','Medium','Hard']
-aboutUsText = """grubumuz hakkındaki mesaj"""
+aboutUsText = """Bilgehan KALAY Adam Asmaca Oyunu"""
 okBaslangic = 0
 printOneTimeMenu = True
 whileControl = True
